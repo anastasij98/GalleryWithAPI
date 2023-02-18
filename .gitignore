@@ -1,6 +1,7 @@
 # Xcode
 .DS_Store
 *.xcworkspace
+GalleryWithAPI.xcworkspace
 xcuserdata
 profile
 *.moved-aside
