@@ -9,3 +9,5 @@ target 'GalleryWithAPI' do
   pod 'Kingfisher', '~> 7.0'
 
 end
+
+# Nastya, privet!
