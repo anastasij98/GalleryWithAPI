@@ -15,34 +15,27 @@ class ViewController: UIViewController {
         return view
     }()
     
-    var imageView: UIImageView = {
-        let view = UIImageView()
-        view.backgroundColor = .clear
-        return view
-    }()
-    
     var requestData: JSONDataModel?
     var items: [ItemModel] {
         get {
             requestData?.data ?? []
         }
     }
-//    var requestArray: JSONDataModel = JSONDataModel(date: ItemModel(id: 2,
-//                                                                       name: "",
-//                                                                       date: "",
-//                                                                       new: true,
-//                                                                       popular: true,
-//                                                                       image: ImageModel(id: 2,
-//                                                                                         name: "cat1"))),
-//        JSONDataModel(date: ItemModel(id: 2, name: "", date: "", new: true, popular: true, image: ImageModel(id: 2, name: "cat2")))
-    
     
     var myUrl: URL?
+    
+    lazy var refreshDataInCoolection: UIRefreshControl = {
+        let view = UIRefreshControl()
+        view.attributedTitle = NSAttributedString(string: "Loading new images")
+        view.tintColor = .systemMint
+        view.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        return view
+    }()
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
+        
         setupLargeTitle()
         setupGallery()
         getData()
@@ -68,22 +61,17 @@ class ViewController: UIViewController {
         galleryCollection.delegate = self
         galleryCollection.dataSource = self
         
-        view.addSubviews(imageView, galleryCollection)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: 100),
-            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-        ])
+        view.addSubviews( galleryCollection)
         
         galleryCollection.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            galleryCollection.topAnchor.constraint(equalTo: imageView.bottomAnchor),
+            galleryCollection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             galleryCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             galleryCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             galleryCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+        
+        galleryCollection.refreshControl = refreshDataInCoolection
     }
     
     
@@ -115,22 +103,22 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
-//                    let items = success.data
-//                    self.requestData = items
-//                    print(self.requestData)
-//                    self.myUrl = URL(string: "https://gallery.prod1.webant.ru/media/" + self.requestData.data[0].image.name)
-//
-//                    print(self.myUrl)
-                    
                     self.requestData = success
                     self.galleryCollection.reloadData()
-                    // print(success)
                     
                 case .failure(let failure):
                     print(failure)
                 }
             }
         }
+    }
+    
+    @objc
+    func refreshData(sender: UIRefreshControl) {
+        requestData?.data.removeAll()
+        getData()
+        galleryCollection.reloadData()
+        refreshDataInCoolection.endRefreshing()
     }
 }
 
