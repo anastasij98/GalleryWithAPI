@@ -6,6 +6,7 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+GalleryWithAPI.xcworkspace
 
 #CocoaPods
 Pods
