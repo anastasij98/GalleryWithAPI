@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct ImageModel: Codable {
-    var id: Int
-    var name: String
+
+struct JSONDataModel: Codable {
+    var data: [ItemModel]
 }
 
 struct ItemModel: Codable {
@@ -27,6 +27,10 @@ struct ItemModel: Codable {
     }
 }
 
-struct JSONDataModel: Codable {
-    var data: [ItemModel]
+struct ImageModel: Codable {
+    var id: Int
+    var name: String
 }
+
+
+
