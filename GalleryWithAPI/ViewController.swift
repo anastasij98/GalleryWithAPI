@@ -95,6 +95,7 @@ class ViewController: UIViewController {
             }
         }
         task.resume()
+        refreshDataInCoolection.endRefreshing()
     }
 
     @objc
@@ -115,10 +116,8 @@ class ViewController: UIViewController {
     
     @objc
     func refreshData(sender: UIRefreshControl) {
-        requestData?.data.removeAll()
         getData()
-        galleryCollection.reloadData()
-        refreshDataInCoolection.endRefreshing()
+        requestData?.data.removeAll()
     }
 }
 
