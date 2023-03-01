@@ -22,7 +22,14 @@ class ViewController: UIViewController {
         }
     }
     
+    var requestImages: [ItemModel] = []
+    
     var myUrl: URL?
+    
+    var isLoadingRightNow = false
+    
+    var currentPage = 1
+    var imagesPerPage = 15
     
     lazy var refreshDataInCoolection: UIRefreshControl = {
         let view = UIRefreshControl()
@@ -76,7 +83,8 @@ class ViewController: UIViewController {
     
     
     func getAnswerFromRequest(completion: @escaping(Result<JSONDataModel, Error>) -> ()) {
-        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos") else { return }
+        //        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos") else { return }
+        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(currentPage)&limit=\(imagesPerPage)") else { return }
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
@@ -105,33 +113,50 @@ class ViewController: UIViewController {
                 switch result {
                 case .success(let success):
                     self.requestData = success
+                    self.requestImages.append(contentsOf: self.items)
                     self.galleryCollection.reloadData()
-                    
+ 
                 case .failure(let failure):
                     print(failure)
                 }
+                self.isLoadingRightNow = false
             }
         }
     }
     
     @objc
     func refreshData(sender: UIRefreshControl) {
+        currentPage = 1
+        requestImages.removeAll()
+        galleryCollection.reloadData()
         getData()
-        requestData?.data.removeAll()
+    }
+    
+    func loadMore() {
+        currentPage += 1
+        isLoadingRightNow = true
+        getData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+            let lastItem = requestImages.count
+            if indexPath.row == lastItem - 1 && isLoadingRightNow == false {
+                loadMore()
+            }
+       
     }
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        items.count
+        requestImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gallery", for: indexPath) as? GalleryCell else { return UICollectionViewCell() }
-        cell.backgroundColor = .blue
-        
-        let urlSting = "https://gallery.prod1.webant.ru/media/" + items[indexPath.item].image.name
+
+        let urlSting = "https://gallery.prod1.webant.ru/media/" + requestImages[indexPath.item].image.name
         let model = GalleryCellModel(imageUrl: URL(string: urlSting))
         cell.setupCollectionItem(model: model)
        

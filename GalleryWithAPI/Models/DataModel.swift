@@ -10,6 +10,9 @@ import Foundation
 
 struct JSONDataModel: Codable {
     var data: [ItemModel]
+    var itemsPerPage: Int
+    var countOfPages: Int
+    var totalItems: Int
 }
 
 struct ItemModel: Codable {
