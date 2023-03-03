@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var galleryCollection: UICollectionView = {
+    var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero,
                                     collectionViewLayout: UICollectionViewFlowLayout())
         return view
@@ -28,10 +28,10 @@ class ViewController: UIViewController {
     
     var isLoadingRightNow = false
     
-    var currentPage = 1
+    var currentPage = 0
     var imagesPerPage = 15
     
-    lazy var refreshDataInCoolection: UIRefreshControl = {
+    lazy var refreshControl: UIRefreshControl = {
         let view = UIRefreshControl()
         view.attributedTitle = NSAttributedString(string: "Loading new images")
         view.tintColor = .systemMint
@@ -40,45 +40,47 @@ class ViewController: UIViewController {
     }()
 
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
         setupLargeTitle()
         setupGallery()
-        getData()
+        loadMore()
         
     }
     
     private func setupLargeTitle() {
+        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Popular"
         navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor : UIColor(red: 47/255.0, green: 23/255.0, blue: 103/255.0, alpha: 1/1.0),
-            .font : UIFont(name: "SFCompactDisplay-Semibold", size: 20) ?? .systemFont(ofSize: 20)
+            .foregroundColor: UIColor.customPurple,
+            .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
         ]
         navigationController?.navigationBar.largeTitleTextAttributes = [
-            .foregroundColor : UIColor(red: 47/255.0, green: 23/255.0, blue: 103/255.0, alpha: 1/1.0),
-            .font : UIFont(name: "SFCompactDisplay-Semibold", size: 30) ?? .systemFont(ofSize: 20)
+//            .foregroundColor: UIColor(red: 47/255.0, green: 23/255.0, blue: 103/255.0, alpha: 1/1.0),
+            .foregroundColor: UIColor(named: "testColor") ?? #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1),
+            .font: UIFont.systemFont(ofSize: 30, weight: .semibold)
         ]
     }
     
     private func setupGallery() {
-        galleryCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        galleryCollection.register(GalleryCell.self, forCellWithReuseIdentifier: "gallery")
-        galleryCollection.delegate = self
-        galleryCollection.dataSource = self
+        extendedLayoutIncludesOpaqueBars = true
+
+        collectionView.register(GalleryCell.self, forCellWithReuseIdentifier: "gallery")
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
-        view.addSubviews( galleryCollection)
+        view.addSubviews( collectionView)
         
-        galleryCollection.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            galleryCollection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            galleryCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            galleryCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            galleryCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        galleryCollection.refreshControl = refreshDataInCoolection
+        collectionView.refreshControl = refreshControl
     }
     
     
@@ -101,9 +103,10 @@ class ViewController: UIViewController {
             } else {
                 completion(.failure(NSError(domain: "Get nothing", code: 0, userInfo: [ : ])))
             }
+            self.isLoadingRightNow = false
         }
+        isLoadingRightNow = true
         task.resume()
-        refreshDataInCoolection.endRefreshing()
     }
 
     @objc
@@ -114,36 +117,38 @@ class ViewController: UIViewController {
                 case .success(let success):
                     self.requestData = success
                     self.requestImages.append(contentsOf: self.items)
-                    self.galleryCollection.reloadData()
+//                    self.galleryCollection.reloadData()
+                    self.collectionView.reloadSections([0])
  
                 case .failure(let failure):
                     print(failure)
                 }
-                self.isLoadingRightNow = false
+                self.refreshControl.endRefreshing()
             }
         }
     }
     
     @objc
     func refreshData(sender: UIRefreshControl) {
-        currentPage = 1
+        currentPage = 0
         requestImages.removeAll()
-        galleryCollection.reloadData()
-        getData()
+        collectionView.reloadData()
+        loadMore()
     }
     
     func loadMore() {
+        guard !isLoadingRightNow else {
+            return
+        }
         currentPage += 1
-        isLoadingRightNow = true
         getData()
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
             let lastItem = requestImages.count
-            if indexPath.row == lastItem - 1 && isLoadingRightNow == false {
+            if indexPath.row == lastItem - 1 {
                 loadMore()
             }
-       
     }
 }
 
@@ -183,6 +188,12 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         return 17
     }
 
+}
+
+extension UIColor {
+    static var customPurple: UIColor {
+        #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1)
+    }
 }
 
 

@@ -10,11 +10,10 @@
 		4743DD66299E138E00172F50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743DD65299E138E00172F50 /* AppDelegate.swift */; };
 		4743DD68299E138E00172F50 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743DD67299E138E00172F50 /* SceneDelegate.swift */; };
 		4743DD6A299E138E00172F50 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743DD69299E138E00172F50 /* ViewController.swift */; };
-		4743DD6D299E138E00172F50 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4743DD6B299E138E00172F50 /* Main.storyboard */; };
 		4743DD6F299E138F00172F50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4743DD6E299E138F00172F50 /* Assets.xcassets */; };
 		4743DD72299E138F00172F50 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4743DD70299E138F00172F50 /* LaunchScreen.storyboard */; };
 		4743DD7A299E284300172F50 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743DD79299E284300172F50 /* GalleryCell.swift */; };
-		47FAE911299E4B1D00C69AAC /* SF-Compact-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 47FAE910299E4B1D00C69AAC /* SF-Compact-Display-Semibold.otf */; };
+		47734E7029AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 47734E6F29AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf */; };
 		47FAE913299E598D00C69AAC /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FAE912299E598D00C69AAC /* DataModel.swift */; };
 		47FAE915299EA0CD00C69AAC /* AddSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FAE914299EA0CD00C69AAC /* AddSubviews.swift */; };
 		E8313DF5577AE8A1910DE06D /* Pods_GalleryWithAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFC9B05008FC279FFB83411 /* Pods_GalleryWithAPI.framework */; };
@@ -26,12 +25,11 @@
 		4743DD65299E138E00172F50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4743DD67299E138E00172F50 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4743DD69299E138E00172F50 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		4743DD6C299E138E00172F50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4743DD6E299E138F00172F50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4743DD71299E138F00172F50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4743DD73299E138F00172F50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4743DD79299E284300172F50 /* GalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
-		47FAE910299E4B1D00C69AAC /* SF-Compact-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SF-Compact-Display-Semibold.otf"; path = "/Library/Fonts/SF-Compact-Display-Semibold.otf"; sourceTree = "<absolute>"; };
+		47734E6F29AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Display-Semibold.otf"; sourceTree = "<group>"; };
 		47FAE912299E598D00C69AAC /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		47FAE914299EA0CD00C69AAC /* AddSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubviews.swift; sourceTree = "<group>"; };
 		85B2E9DA6B739041DCDE98F8 /* Pods-GalleryWithAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GalleryWithAPI.debug.xcconfig"; path = "Target Support Files/Pods-GalleryWithAPI/Pods-GalleryWithAPI.debug.xcconfig"; sourceTree = "<group>"; };
@@ -79,13 +77,12 @@
 		4743DD64299E138E00172F50 /* GalleryWithAPI */ = {
 			isa = PBXGroup;
 			children = (
-				47FAE90F299E49D600C69AAC /* Fonts */,
+				47734E6E29AFE35800CC0E7F /* Fonts */,
 				4743DD65299E138E00172F50 /* AppDelegate.swift */,
 				4743DD67299E138E00172F50 /* SceneDelegate.swift */,
 				47FAE914299EA0CD00C69AAC /* AddSubviews.swift */,
 				4743DD7B299E2CEF00172F50 /* Models */,
 				4743DD69299E138E00172F50 /* ViewController.swift */,
-				4743DD6B299E138E00172F50 /* Main.storyboard */,
 				4743DD6E299E138F00172F50 /* Assets.xcassets */,
 				4743DD70299E138F00172F50 /* LaunchScreen.storyboard */,
 				4743DD73299E138F00172F50 /* Info.plist */,
@@ -102,10 +99,10 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		47FAE90F299E49D600C69AAC /* Fonts */ = {
+		47734E6E29AFE35800CC0E7F /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				47FAE910299E4B1D00C69AAC /* SF-Compact-Display-Semibold.otf */,
+				47734E6F29AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -181,8 +178,7 @@
 			files = (
 				4743DD72299E138F00172F50 /* LaunchScreen.storyboard in Resources */,
 				4743DD6F299E138F00172F50 /* Assets.xcassets in Resources */,
-				4743DD6D299E138E00172F50 /* Main.storyboard in Resources */,
-				47FAE911299E4B1D00C69AAC /* SF-Compact-Display-Semibold.otf in Resources */,
+				47734E7029AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,14 +243,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		4743DD6B299E138E00172F50 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4743DD6C299E138E00172F50 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		4743DD70299E138F00172F50 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -391,8 +379,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GalleryWithAPI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -419,8 +406,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GalleryWithAPI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
