@@ -14,6 +14,7 @@
 		4743DD72299E138F00172F50 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4743DD70299E138F00172F50 /* LaunchScreen.storyboard */; };
 		4743DD7A299E284300172F50 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743DD79299E284300172F50 /* GalleryCell.swift */; };
 		47734E7029AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 47734E6F29AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf */; };
+		47734E7329B2334C00CC0E7F /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47734E7229B2334C00CC0E7F /* UIColorExtension.swift */; };
 		47FAE913299E598D00C69AAC /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FAE912299E598D00C69AAC /* DataModel.swift */; };
 		47FAE915299EA0CD00C69AAC /* AddSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FAE914299EA0CD00C69AAC /* AddSubviews.swift */; };
 		E8313DF5577AE8A1910DE06D /* Pods_GalleryWithAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFC9B05008FC279FFB83411 /* Pods_GalleryWithAPI.framework */; };
@@ -30,6 +31,7 @@
 		4743DD73299E138F00172F50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4743DD79299E284300172F50 /* GalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
 		47734E6F29AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Display-Semibold.otf"; sourceTree = "<group>"; };
+		47734E7229B2334C00CC0E7F /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		47FAE912299E598D00C69AAC /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		47FAE914299EA0CD00C69AAC /* AddSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubviews.swift; sourceTree = "<group>"; };
 		85B2E9DA6B739041DCDE98F8 /* Pods-GalleryWithAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GalleryWithAPI.debug.xcconfig"; path = "Target Support Files/Pods-GalleryWithAPI/Pods-GalleryWithAPI.debug.xcconfig"; sourceTree = "<group>"; };
@@ -77,10 +79,10 @@
 		4743DD64299E138E00172F50 /* GalleryWithAPI */ = {
 			isa = PBXGroup;
 			children = (
+				47734E7129B2332300CC0E7F /* Extensions */,
 				47734E6E29AFE35800CC0E7F /* Fonts */,
 				4743DD65299E138E00172F50 /* AppDelegate.swift */,
 				4743DD67299E138E00172F50 /* SceneDelegate.swift */,
-				47FAE914299EA0CD00C69AAC /* AddSubviews.swift */,
 				4743DD7B299E2CEF00172F50 /* Models */,
 				4743DD69299E138E00172F50 /* ViewController.swift */,
 				4743DD6E299E138F00172F50 /* Assets.xcassets */,
@@ -105,6 +107,15 @@
 				47734E6F29AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		47734E7129B2332300CC0E7F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				47FAE914299EA0CD00C69AAC /* AddSubviews.swift */,
+				47734E7229B2334C00CC0E7F /* UIColorExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		F6E2591715970D356D9484C8 /* Pods */ = {
@@ -232,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47FAE913299E598D00C69AAC /* DataModel.swift in Sources */,
+				47734E7329B2334C00CC0E7F /* UIColorExtension.swift in Sources */,
 				4743DD7A299E284300172F50 /* GalleryCell.swift in Sources */,
 				4743DD6A299E138E00172F50 /* ViewController.swift in Sources */,
 				47FAE915299EA0CD00C69AAC /* AddSubviews.swift in Sources */,

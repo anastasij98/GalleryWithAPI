@@ -27,9 +27,21 @@ class ViewController: UIViewController {
     var myUrl: URL?
     
     var isLoadingRightNow = false
+    var totalItems: Int {
+        requestData?.totalItems ?? 0
+    }
+    var countOfPages: Int {
+        get {
+            totalItems / imagesPerPage
+        }
+    }
     
-    var currentPage = 0
     var imagesPerPage = 15
+    var currentPage = 0
+    var pageToLoad = 1
+    var hasMorePages: Bool {
+        currentPage <= countOfPages
+    }
     
     lazy var refreshControl: UIRefreshControl = {
         let view = UIRefreshControl()
@@ -47,7 +59,7 @@ class ViewController: UIViewController {
         loadMore()
         
     }
-    
+    // MARK: - Setup galery and title
     private func setupLargeTitle() {
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -58,7 +70,7 @@ class ViewController: UIViewController {
         ]
         navigationController?.navigationBar.largeTitleTextAttributes = [
 //            .foregroundColor: UIColor(red: 47/255.0, green: 23/255.0, blue: 103/255.0, alpha: 1/1.0),
-            .foregroundColor: UIColor(named: "testColor") ?? #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1),
+            .foregroundColor: #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1) ?? UIColor(named: "testColor"),
             .font: UIFont.systemFont(ofSize: 30, weight: .semibold)
         ]
     }
@@ -82,11 +94,9 @@ class ViewController: UIViewController {
         
         collectionView.refreshControl = refreshControl
     }
-    
-    
+    // MARK: - URL, Request
     func getAnswerFromRequest(completion: @escaping(Result<JSONDataModel, Error>) -> ()) {
-        //        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos") else { return }
-        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(currentPage)&limit=\(imagesPerPage)") else { return }
+        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(pageToLoad)&limit=\(imagesPerPage)") else { return }
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
@@ -117,8 +127,10 @@ class ViewController: UIViewController {
                 case .success(let success):
                     self.requestData = success
                     self.requestImages.append(contentsOf: self.items)
-//                    self.galleryCollection.reloadData()
                     self.collectionView.reloadSections([0])
+                    self.currentPage = self.pageToLoad
+                    self.pageToLoad += 1
+                    
  
                 case .failure(let failure):
                     print(failure)
@@ -131,17 +143,17 @@ class ViewController: UIViewController {
     @objc
     func refreshData(sender: UIRefreshControl) {
         currentPage = 0
+        pageToLoad = 1
         requestImages.removeAll()
         collectionView.reloadData()
         loadMore()
     }
     
     func loadMore() {
-        guard !isLoadingRightNow else {
-            return
-        }
-        currentPage += 1
-        getData()
+            guard !isLoadingRightNow, hasMorePages else {
+                return print("all loaded")
+            }
+            getData()
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -152,6 +164,7 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -187,14 +200,4 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 17
     }
-
 }
-
-extension UIColor {
-    static var customPurple: UIColor {
-        #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1)
-    }
-}
-
-
-
