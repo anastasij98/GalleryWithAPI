@@ -8,6 +8,7 @@ profile
 DerivedData
 .idea/
 GalleryWithAPI.xcworkspace
+GalleryWithAPI.xcodeproj/
 
 #CocoaPods
 Pods
