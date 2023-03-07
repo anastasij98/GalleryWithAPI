@@ -18,16 +18,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let viewController = ViewController()
-        let navigationController = UINavigationController(rootViewController: viewController)
-        let viewController1 = ViewController()
-        let navigationController1 = UINavigationController(rootViewController: viewController1)
+        
+        let newController = ViewController()
+        let navigationController = UINavigationController(rootViewController: newController)
+        
+        let popularController = ViewController()
+        let navigationController1 = UINavigationController(rootViewController: popularController)
+        
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [navigationController, navigationController1]
+        
         tabBarController.tabBar.items?[0].title = "New"
-        tabBarController.tabBar.tintColor = .customPurple
+        tabBarController.tabBar.items?[1].title = "Popular"
+        tabBarController.tabBar.tintColor = .customPink
         
         tabBarController.tabBar.items?[0].image = UIImage(named: "TodayIcon")
+        tabBarController.tabBar.items?[1].image = UIImage(named: "popular")
+        tabBarController.tabBar.items?[1].selectedImage = UIImage(named: "pop")
+
         window?.rootViewController = tabBarController
         window?.backgroundColor = .white
         window?.makeKeyAndVisible()
