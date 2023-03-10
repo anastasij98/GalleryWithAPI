@@ -19,22 +19,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
-        let newController = ViewController()
-        let navigationController = UINavigationController(rootViewController: newController)
-        
-        let popularController = ViewController()
-        let navigationController1 = UINavigationController(rootViewController: popularController)
-        
+//        let newController = ViewController()
+//        newController.screenMode = .new
+//        let navigationController = UINavigationController(rootViewController: newController)
+//
+//        let popularController = ViewController()
+//        popularController.screenMode = .popular
+//        let navigationController1 = UINavigationController(rootViewController: popularController)
+//
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [navigationController, navigationController1]
-        
-        tabBarController.tabBar.items?[0].title = "New"
-        tabBarController.tabBar.items?[1].title = "Popular"
+//        tabBarController.tabBar.items?[0].title = newController.screenMode.title
+//        tabBarController.tabBar.items?[1].title = popularController.screenMode.title
         tabBarController.tabBar.tintColor = .customPink
+//
+//        tabBarController.tabBar.items?[0].image = newController.screenMode.image
+//        tabBarController.tabBar.items?[1].image = popularController.screenMode.image
+//        tabBarController.tabBar.items?[1].selectedImage = UIImage(named: "pop")
         
-        tabBarController.tabBar.items?[0].image = UIImage(named: "TodayIcon")
-        tabBarController.tabBar.items?[1].image = UIImage(named: "popular")
-        tabBarController.tabBar.items?[1].selectedImage = UIImage(named: "pop")
+        ScreenMode.allCases.enumerated().forEach { screenType in
+            let viewController = ViewController()
+            viewController.screenMode = screenType.element
+            let navigationController = UINavigationController(rootViewController: viewController)
+            
+            if tabBarController.viewControllers == nil {
+                tabBarController.viewControllers = [navigationController]
+            } else {
+                tabBarController.viewControllers!.append(navigationController)
+            }
+            tabBarController.tabBar.items?[screenType.offset].title = screenType.element.title
+            tabBarController.tabBar.items?[screenType.offset].image = screenType.element.image
+        }
 
         window?.rootViewController = tabBarController
         window?.backgroundColor = .white

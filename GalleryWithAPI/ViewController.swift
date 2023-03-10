@@ -43,6 +43,8 @@ class ViewController: UIViewController {
         currentPage <= countOfPages
     }
     
+    var screenMode = ScreenMode.new
+    
     lazy var refreshControl: UIRefreshControl = {
         let view = UIRefreshControl()
         view.attributedTitle = NSAttributedString(string: "Loading new images")
@@ -63,7 +65,7 @@ class ViewController: UIViewController {
     private func setupLargeTitle() {
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Popular"
+        navigationItem.title = screenMode.title
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.customPurple,
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -96,7 +98,20 @@ class ViewController: UIViewController {
     }
     // MARK: - URL, Request
     func getAnswerFromRequest(completion: @escaping(Result<JSONDataModel, Error>) -> ()) {
-        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(pageToLoad)&limit=\(imagesPerPage)") else { return }
+        let newValue: Bool
+        let popularValue: Bool
+
+        switch screenMode {
+            case .new:
+                newValue = true
+                popularValue = false
+            case .popular:
+                newValue = false
+                popularValue = true
+        }
+    
+        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(pageToLoad)&new=\(newValue)&popular=\(popularValue)&limit=\(imagesPerPage)") else { return }
+        
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
