@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ViewController: UIViewController {
     
@@ -84,15 +85,14 @@ class ViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        view.addSubviews( collectionView)
+        view.addSubviews(collectionView)
         
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-        ])
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(view.snp.top)
+            $0.bottom.equalTo(view.snp.bottom)
+            $0.leading.equalTo(view.snp.leading)
+            $0.trailing.equalTo(view.snp.trailing)
+        }
         
         collectionView.refreshControl = refreshControl
     }

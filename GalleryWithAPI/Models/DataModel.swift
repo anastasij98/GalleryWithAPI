@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct JSONDataModel: Codable {
     var data: [ItemModel]
     var itemsPerPage: Int
@@ -34,6 +33,3 @@ struct ImageModel: Codable {
     var id: Int
     var name: String
 }
-
-
-
