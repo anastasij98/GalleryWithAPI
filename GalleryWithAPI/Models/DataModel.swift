@@ -9,18 +9,17 @@ import Foundation
 
 struct JSONDataModel: Codable {
     var data: [ItemModel]
-    var itemsPerPage: Int
-    var countOfPages: Int
-    var totalItems: Int
+    var itemsPerPage: Int?
+    var countOfPages: Int?
+    var totalItems: Int?
 }
 
 struct ItemModel: Codable {
-
-    var id: Int
-    var name: String
-    var date: String
-    var new: Bool
-    var popular: Bool
+    var id: Int?
+    var name: String?
+    var date: String?
+    var new: Bool?
+    var popular: Bool?
     var image: ImageModel
     
     enum CodingKeys: String, CodingKey {
@@ -30,6 +29,6 @@ struct ItemModel: Codable {
 }
 
 struct ImageModel: Codable {
-    var id: Int
-    var name: String
+    var id: Int?
+    var name: String?
 }
