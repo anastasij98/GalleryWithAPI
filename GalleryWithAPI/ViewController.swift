@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class ViewController: UIViewController {
     
@@ -102,29 +103,31 @@ class ViewController: UIViewController {
                 newValue = false
                 popularValue = true
         }
-     
-        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(pageToLoad)&new=\(newValue)&popular=\(popularValue)&limit=\(imagesPerPage)") else { return }
 
-        let request = URLRequest(url: url)
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            if let data = data {
-                //
-                do {
-                    let result = try JSONDecoder().decode(JSONDataModel.self, from: data)
-                    completion(.success(result))
-                    //
-                } catch let decodingError {
-                    completion(.failure(decodingError))
-                }
-            } else if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.failure(NSError(domain: "Get nothing", code: 0, userInfo: [ : ])))
-            }
-            self.isLoadingRightNow = false
-        }
-        isLoadingRightNow = true
-        task.resume()
+        let request = "https://gallery.prod1.webant.ru/api/photos"
+        let parametrs: Parameters = [
+            "page": "\(pageToLoad)",
+            "new": "\(newValue)",
+            "popular": "\(popularValue)",
+            "limit": "\(imagesPerPage)"
+        ]
+        
+        AF.request(request, method: .get, parameters: parametrs).responseData { response in
+            if let data = response.data {
+                   do {
+                       let result = try JSONDecoder().decode(JSONDataModel.self, from: data)
+                       completion(.success(result))
+                   } catch let decodingError {
+                       completion(.failure(decodingError))
+                   }
+               } else if let error = response.error {
+                   completion(.failure(error))
+               } else {
+                   completion(.failure(NSError(domain: "Get nothing", code: 0, userInfo: [ : ])))
+               }
+               self.isLoadingRightNow = false
+           }
+           isLoadingRightNow = true
     }
 
     @objc
@@ -178,7 +181,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gallery", for: indexPath) as? GalleryCell else { return UICollectionViewCell() }
 
-        let urlSting = "https://gallery.prod1.webant.ru/media/" + requestImages[indexPath.item].image.name
+        let urlSting = "https://gallery.prod1.webant.ru/media/" + (requestImages[indexPath.item].image.name ?? "")
         let model = GalleryCellModel(imageUrl: URL(string: urlSting))
         cell.setupCollectionItem(model: model)
        
