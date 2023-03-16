@@ -14,21 +14,14 @@ class ViewController: UIViewController {
                                     collectionViewLayout: UICollectionViewFlowLayout())
         return view
     }()
-    
-    var requestData: JSONDataModel?
-    var items: [ItemModel] {
-        get {
-            requestData?.data ?? []
-        }
-    }
-    
+
     var requestImages: [ItemModel] = []
     
     var myUrl: URL?
     
     var isLoadingRightNow = false
     var totalItems: Int {
-        requestData?.totalItems ?? 0
+        requestImages.count
     }
     var countOfPages: Int {
         get {
@@ -38,7 +31,7 @@ class ViewController: UIViewController {
     
     var imagesPerPage = 15
     var currentPage = 0
-    var pageToLoad = 1
+    var pageToLoad = 0
     var hasMorePages: Bool {
         currentPage <= countOfPages
     }
@@ -96,6 +89,7 @@ class ViewController: UIViewController {
     }
     // MARK: - URL, Request
     func getAnswerFromRequest(completion: @escaping(Result<JSONDataModel, Error>) -> ()) {
+        pageToLoad = currentPage + 1
         guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(pageToLoad)&limit=\(imagesPerPage)") else { return }
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
@@ -125,13 +119,10 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
-                    self.requestData = success
-                    self.requestImages.append(contentsOf: self.items)
+                    self.requestImages.append(contentsOf: success.data)
                     self.collectionView.reloadSections([0])
                     self.currentPage = self.pageToLoad
-                    self.pageToLoad += 1
-                    
- 
+
                 case .failure(let failure):
                     print(failure)
                 }
@@ -143,7 +134,6 @@ class ViewController: UIViewController {
     @objc
     func refreshData(sender: UIRefreshControl) {
         currentPage = 0
-        pageToLoad = 1
         requestImages.removeAll()
         collectionView.reloadData()
         loadMore()
@@ -157,8 +147,8 @@ class ViewController: UIViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-            let lastItem = requestImages.count
-            if indexPath.row == lastItem - 1 {
+            let lastItemIndex = requestImages.count - 1
+            if indexPath.row == lastItemIndex {
                 loadMore()
             }
     }
