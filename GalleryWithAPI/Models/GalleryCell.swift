@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 struct GalleryCellModel {
     
@@ -48,13 +49,12 @@ class GalleryCell: UICollectionViewCell {
     func setupImage() {
         contentView.addSubview(imageInGallery)
         
-        imageInGallery.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageInGallery.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageInGallery.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            imageInGallery.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageInGallery.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        ])
+        imageInGallery.snp.makeConstraints {
+            $0.top.equalTo(contentView.snp.top)
+            $0.bottom.equalTo(contentView.snp.bottom)
+            $0.leading.equalTo(contentView.snp.leading)
+            $0.trailing.equalTo(contentView.snp.trailing)
+        }
         
         imageInGallery.layer.cornerRadius = 6
         imageInGallery.clipsToBounds = true
