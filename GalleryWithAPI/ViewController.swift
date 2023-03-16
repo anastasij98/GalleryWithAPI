@@ -36,6 +36,8 @@ class ViewController: UIViewController {
         currentPage <= countOfPages
     }
     
+    var screenMode = ScreenMode.new
+    
     lazy var refreshControl: UIRefreshControl = {
         let view = UIRefreshControl()
         view.attributedTitle = NSAttributedString(string: "Loading new images")
@@ -56,14 +58,13 @@ class ViewController: UIViewController {
     private func setupLargeTitle() {
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Popular"
+        navigationItem.title = screenMode.title
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.customPurple,
             .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
         ]
         navigationController?.navigationBar.largeTitleTextAttributes = [
-//            .foregroundColor: UIColor(red: 47/255.0, green: 23/255.0, blue: 103/255.0, alpha: 1/1.0),
-            .foregroundColor: #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1) ?? UIColor(named: "testColor"),
+            .foregroundColor: #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1) ,
             .font: UIFont.systemFont(ofSize: 30, weight: .semibold)
         ]
     }
@@ -90,7 +91,20 @@ class ViewController: UIViewController {
     // MARK: - URL, Request
     func getAnswerFromRequest(completion: @escaping(Result<JSONDataModel, Error>) -> ()) {
         pageToLoad = currentPage + 1
-        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(pageToLoad)&limit=\(imagesPerPage)") else { return }
+        let newValue: Bool
+        let popularValue: Bool
+
+        switch screenMode {
+            case .new:
+                newValue = true
+                popularValue = false
+            case .popular:
+                newValue = false
+                popularValue = true
+        }
+     
+        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(pageToLoad)&new=\(newValue)&popular=\(popularValue)&limit=\(imagesPerPage)") else { return }
+
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
