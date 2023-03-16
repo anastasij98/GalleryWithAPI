@@ -18,24 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        
-//        let newController = ViewController()
-//        newController.screenMode = .new
-//        let navigationController = UINavigationController(rootViewController: newController)
-//
-//        let popularController = ViewController()
-//        popularController.screenMode = .popular
-//        let navigationController1 = UINavigationController(rootViewController: popularController)
-//
         let tabBarController = UITabBarController()
-//        tabBarController.tabBar.items?[0].title = newController.screenMode.title
-//        tabBarController.tabBar.items?[1].title = popularController.screenMode.title
         tabBarController.tabBar.tintColor = .customPink
-//
-//        tabBarController.tabBar.items?[0].image = newController.screenMode.image
-//        tabBarController.tabBar.items?[1].image = popularController.screenMode.image
-//        tabBarController.tabBar.items?[1].selectedImage = UIImage(named: "pop")
-        
         ScreenMode.allCases.enumerated().forEach { screenType in
             let viewController = ViewController()
             viewController.screenMode = screenType.element
@@ -44,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if tabBarController.viewControllers == nil {
                 tabBarController.viewControllers = [navigationController]
             } else {
-                tabBarController.viewControllers!.append(navigationController)
+                tabBarController.viewControllers?.append(navigationController)
             }
             tabBarController.tabBar.items?[screenType.offset].title = screenType.element.title
             tabBarController.tabBar.items?[screenType.offset].image = screenType.element.image
