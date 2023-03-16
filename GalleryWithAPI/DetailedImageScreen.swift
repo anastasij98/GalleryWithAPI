@@ -58,7 +58,7 @@ class DetailedImageScreen: UIViewController {
         imageDescription.text = model?.description
         
         if let name = model?.image.name {
-            let urlString = "https://gallery.prod1.webant.ru/media/" + name
+            let urlString = URLConfiguration.url + URLConfiguration.media + name
             guard let url = URL(string: urlString) else {
                 return
             }

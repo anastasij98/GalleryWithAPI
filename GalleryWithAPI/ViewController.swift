@@ -116,7 +116,7 @@ class ViewController: UIViewController {
                 popularValue = true
         }
 
-        let request = "https://gallery.prod1.webant.ru/api/photos"
+        let request = URLConfiguration.url + URLConfiguration.api
         let parametrs: Parameters = [
             "page": "\(pageToLoad)",
             "new": "\(newValue)",
@@ -197,8 +197,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gallery", for: indexPath) as? GalleryCell else { return UICollectionViewCell() }
 
-        let urlSting = "https://gallery.prod1.webant.ru/media/" + (requestImages[indexPath.item].image.name ?? "")
-        let model = GalleryCellModel(imageUrl: URL(string: urlSting))
+        let urlString = URLConfiguration.url + URLConfiguration.media + (requestImages[indexPath.item].image.name ?? "")
+        let model = GalleryCellModel(imageUrl: URL(string: urlString))
         cell.setupCollectionItem(model: model)
        
         return cell
