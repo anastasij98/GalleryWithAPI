@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import Alamofire
 
 struct GalleryCellModel {
     
@@ -62,20 +63,16 @@ class GalleryCell: UICollectionViewCell {
     }
     
     func setupCollectionItem(model: GalleryCellModel) {
-        guard let url = model.imageUrl else {
-            return
-        }
+        let url = model.imageUrl
+        let request = url?.absoluteString
         
-        let request = URLRequest(url: url)
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, _ in
-            if let data = data {
+        AF.request(request!, method: .get).responseData { response in
+            if let data = response.data {
                 DispatchQueue.main.async {
-                    self?.imageInGallery.image = UIImage(data: data)
+                    self.imageInGallery.image = UIImage(data: data)
                 }
             }
         }
-        task.resume()
-        dataTask = task
     }
     
 }

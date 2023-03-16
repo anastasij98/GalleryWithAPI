@@ -77,6 +77,11 @@ class ViewController: UIViewController {
             .foregroundColor: #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1) ?? UIColor(named: "testColor"),
             .font: UIFont.systemFont(ofSize: 30, weight: .semibold)
         ]
+        
+        navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .customPurple
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backArrow")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backArrow")
     }
     
     private func setupGallery() {
@@ -217,5 +222,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 17
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let nextVC = DetailedImageScreen()
+        nextVC.model = requestImages[indexPath.item]
+        navigationController?.pushViewController(nextVC, animated: true)    
     }
 }

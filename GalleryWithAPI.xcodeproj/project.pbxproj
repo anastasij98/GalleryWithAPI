@@ -16,6 +16,7 @@
 		47734E7029AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 47734E6F29AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf */; };
 		47734E7329B2334C00CC0E7F /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47734E7229B2334C00CC0E7F /* UIColorExtension.swift */; };
 		4781BF2F29B7CDEC0013D4A9 /* ScreenMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4781BF2E29B7CDEC0013D4A9 /* ScreenMode.swift */; };
+		47E6289429C1E34F0031ACAE /* DetailedImageScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E6289329C1E34F0031ACAE /* DetailedImageScreen.swift */; };
 		47FAE913299E598D00C69AAC /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FAE912299E598D00C69AAC /* DataModel.swift */; };
 		47FAE915299EA0CD00C69AAC /* AddSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FAE914299EA0CD00C69AAC /* AddSubviews.swift */; };
 		E8313DF5577AE8A1910DE06D /* Pods_GalleryWithAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFC9B05008FC279FFB83411 /* Pods_GalleryWithAPI.framework */; };
@@ -34,6 +35,7 @@
 		47734E6F29AFE3B100CC0E7F /* SF-Compact-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Display-Semibold.otf"; sourceTree = "<group>"; };
 		47734E7229B2334C00CC0E7F /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		4781BF2E29B7CDEC0013D4A9 /* ScreenMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenMode.swift; sourceTree = "<group>"; };
+		47E6289329C1E34F0031ACAE /* DetailedImageScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedImageScreen.swift; sourceTree = "<group>"; };
 		47FAE912299E598D00C69AAC /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		47FAE914299EA0CD00C69AAC /* AddSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubviews.swift; sourceTree = "<group>"; };
 		85B2E9DA6B739041DCDE98F8 /* Pods-GalleryWithAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GalleryWithAPI.debug.xcconfig"; path = "Target Support Files/Pods-GalleryWithAPI/Pods-GalleryWithAPI.debug.xcconfig"; sourceTree = "<group>"; };
@@ -87,7 +89,7 @@
 				4743DD67299E138E00172F50 /* SceneDelegate.swift */,
 				4743DD7B299E2CEF00172F50 /* Models */,
 				4743DD69299E138E00172F50 /* ViewController.swift */,
-				4781BF2E29B7CDEC0013D4A9 /* ScreenMode.swift */,
+				47E6289329C1E34F0031ACAE /* DetailedImageScreen.swift */,
 				4743DD6E299E138F00172F50 /* Assets.xcassets */,
 				4743DD70299E138F00172F50 /* LaunchScreen.storyboard */,
 				4743DD73299E138F00172F50 /* Info.plist */,
@@ -100,6 +102,7 @@
 			children = (
 				4743DD79299E284300172F50 /* GalleryCell.swift */,
 				47FAE912299E598D00C69AAC /* DataModel.swift */,
+				4781BF2E29B7CDEC0013D4A9 /* ScreenMode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				4743DD7A299E284300172F50 /* GalleryCell.swift in Sources */,
 				4743DD6A299E138E00172F50 /* ViewController.swift in Sources */,
 				47FAE915299EA0CD00C69AAC /* AddSubviews.swift in Sources */,
+				47E6289429C1E34F0031ACAE /* DetailedImageScreen.swift in Sources */,
 				4743DD66299E138E00172F50 /* AppDelegate.swift in Sources */,
 				4743DD68299E138E00172F50 /* SceneDelegate.swift in Sources */,
 			);
