@@ -9,22 +9,34 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var galleryCollection: UICollectionView = {
+    var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero,
                                     collectionViewLayout: UICollectionViewFlowLayout())
         return view
     }()
-    
-    var requestData: JSONDataModel?
-    var items: [ItemModel] {
-        get {
-            requestData?.data ?? []
-        }
-    }
+
+    var requestImages: [ItemModel] = []
     
     var myUrl: URL?
     
-    lazy var refreshDataInCoolection: UIRefreshControl = {
+    var isLoadingRightNow = false
+    var totalItems: Int {
+        requestImages.count
+    }
+    var countOfPages: Int {
+        get {
+            totalItems / imagesPerPage
+        }
+    }
+    
+    var imagesPerPage = 15
+    var currentPage = 0
+    var pageToLoad = 0
+    var hasMorePages: Bool {
+        currentPage <= countOfPages
+    }
+    
+    lazy var refreshControl: UIRefreshControl = {
         let view = UIRefreshControl()
         view.attributedTitle = NSAttributedString(string: "Loading new images")
         view.tintColor = .systemMint
@@ -33,50 +45,52 @@ class ViewController: UIViewController {
     }()
 
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
         setupLargeTitle()
         setupGallery()
-        getData()
+        loadMore()
         
     }
-    
+    // MARK: - Setup galery and title
     private func setupLargeTitle() {
+        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Popular"
         navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor : UIColor(red: 47/255.0, green: 23/255.0, blue: 103/255.0, alpha: 1/1.0),
-            .font : UIFont(name: "SFCompactDisplay-Semibold", size: 20) ?? .systemFont(ofSize: 20)
+            .foregroundColor: UIColor.customPurple,
+            .font: UIFont.systemFont(ofSize: 20, weight: .semibold)
         ]
         navigationController?.navigationBar.largeTitleTextAttributes = [
-            .foregroundColor : UIColor(red: 47/255.0, green: 23/255.0, blue: 103/255.0, alpha: 1/1.0),
-            .font : UIFont(name: "SFCompactDisplay-Semibold", size: 30) ?? .systemFont(ofSize: 20)
+//            .foregroundColor: UIColor(red: 47/255.0, green: 23/255.0, blue: 103/255.0, alpha: 1/1.0),
+            .foregroundColor: #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1) ?? UIColor(named: "testColor"),
+            .font: UIFont.systemFont(ofSize: 30, weight: .semibold)
         ]
     }
     
     private func setupGallery() {
-        galleryCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        galleryCollection.register(GalleryCell.self, forCellWithReuseIdentifier: "gallery")
-        galleryCollection.delegate = self
-        galleryCollection.dataSource = self
+        extendedLayoutIncludesOpaqueBars = true
+
+        collectionView.register(GalleryCell.self, forCellWithReuseIdentifier: "gallery")
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
-        view.addSubviews( galleryCollection)
+        view.addSubviews( collectionView)
         
-        galleryCollection.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            galleryCollection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            galleryCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            galleryCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            galleryCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        galleryCollection.refreshControl = refreshDataInCoolection
+        collectionView.refreshControl = refreshControl
     }
-    
-    
+    // MARK: - URL, Request
     func getAnswerFromRequest(completion: @escaping(Result<JSONDataModel, Error>) -> ()) {
-        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos") else { return }
+        pageToLoad = currentPage + 1
+        guard let url = URL(string: "https://gallery.prod1.webant.ru/api/photos?page=\(pageToLoad)&limit=\(imagesPerPage)") else { return }
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
@@ -93,9 +107,10 @@ class ViewController: UIViewController {
             } else {
                 completion(.failure(NSError(domain: "Get nothing", code: 0, userInfo: [ : ])))
             }
+            self.isLoadingRightNow = false
         }
+        isLoadingRightNow = true
         task.resume()
-        refreshDataInCoolection.endRefreshing()
     }
 
     @objc
@@ -104,34 +119,52 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
-                    self.requestData = success
-                    self.galleryCollection.reloadData()
-                    
+                    self.requestImages.append(contentsOf: success.data)
+                    self.collectionView.reloadSections([0])
+                    self.currentPage = self.pageToLoad
+
                 case .failure(let failure):
                     print(failure)
                 }
+                self.refreshControl.endRefreshing()
             }
         }
     }
     
     @objc
     func refreshData(sender: UIRefreshControl) {
-        getData()
-        requestData?.data.removeAll()
+        currentPage = 0
+        requestImages.removeAll()
+        collectionView.reloadData()
+        loadMore()
+    }
+    
+    func loadMore() {
+            guard !isLoadingRightNow, hasMorePages else {
+                return print("all loaded")
+            }
+            getData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+            let lastItemIndex = requestImages.count - 1
+            if indexPath.row == lastItemIndex {
+                loadMore()
+            }
     }
 }
 
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        items.count
+        requestImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gallery", for: indexPath) as? GalleryCell else { return UICollectionViewCell() }
-        cell.backgroundColor = .blue
-        
-        let urlSting = "https://gallery.prod1.webant.ru/media/" + items[indexPath.item].image.name
+
+        let urlSting = "https://gallery.prod1.webant.ru/media/" + requestImages[indexPath.item].image.name
         let model = GalleryCellModel(imageUrl: URL(string: urlSting))
         cell.setupCollectionItem(model: model)
        
@@ -157,8 +190,4 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 17
     }
-
 }
-
-
-
