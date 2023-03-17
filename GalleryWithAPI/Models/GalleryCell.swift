@@ -18,7 +18,7 @@ struct GalleryCellModel {
 class GalleryCell: UICollectionViewCell {
     
     var imageInGallery = UIImageView()
-    var dataTask: URLSessionDataTask?
+    var request: Alamofire.Request?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,9 +33,10 @@ class GalleryCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
-        dataTask?.cancel()
+
         imageInGallery.image = nil
+        request?.cancel()
+        request = nil
     }
     
     func setupCellLayout() {
@@ -64,9 +65,9 @@ class GalleryCell: UICollectionViewCell {
     
     func setupCollectionItem(model: GalleryCellModel) {
         let url = model.imageUrl
-        let request = url?.absoluteString
+        let requestAF = url?.absoluteString
         
-        AF.request(request!, method: .get).responseData { response in
+        request = AF.request(requestAF!, method: .get).responseData { response in
             if let data = response.data {
                 DispatchQueue.main.async {
                     self.imageInGallery.image = UIImage(data: data)
