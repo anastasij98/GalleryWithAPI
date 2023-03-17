@@ -69,6 +69,11 @@ class ViewController: UIViewController {
             .foregroundColor: #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1) ,
             .font: UIFont.systemFont(ofSize: 30, weight: .semibold)
         ]
+        
+        navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .customPurple
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backArrow")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backArrow")
     }
     
     private func setupGallery() {
@@ -104,7 +109,7 @@ class ViewController: UIViewController {
                 popularValue = true
         }
 
-        let request = "https://gallery.prod1.webant.ru/api/photos"
+        let request = URLConfiguration.url + URLConfiguration.api
         let parametrs: Parameters = [
             "page": "\(pageToLoad)",
             "new": "\(newValue)",
@@ -181,8 +186,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gallery", for: indexPath) as? GalleryCell else { return UICollectionViewCell() }
 
-        let urlSting = "https://gallery.prod1.webant.ru/media/" + (requestImages[indexPath.item].image.name ?? "")
-        let model = GalleryCellModel(imageUrl: URL(string: urlSting))
+        let urlString = URLConfiguration.url + URLConfiguration.media + (requestImages[indexPath.item].image.name ?? "")
+        let model = GalleryCellModel(imageUrl: URL(string: urlString))
         cell.setupCollectionItem(model: model)
        
         return cell
@@ -206,5 +211,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 17
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let nextVC = DetailedImageScreen()
+        nextVC.model = requestImages[indexPath.item]
+        navigationController?.pushViewController(nextVC, animated: true)    
     }
 }
