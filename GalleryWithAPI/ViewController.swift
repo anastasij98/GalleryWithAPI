@@ -47,15 +47,48 @@ class ViewController: UIViewController {
         view.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         return view
     }()
+    
+    lazy var networkSV: NetworkStackView = {
+        let view = NetworkStackView()
+        view.isHidden = true
+        return view
+    }()
+    
+    lazy var reachibilityNetwork = NetworkReachabilityManager(host: "www.ya.ru")
+    
+    var completion: ((Bool) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupLargeTitle()
         setupGallery()
+        setupNetworkSV()
         loadMore()
+//        doWhaiIWant( completion: { boolValue in
+//            print("doWhaiIWant", boolValue)
+//        })
         
+        reachibilityNetwork?.startListening(onUpdatePerforming: { [weak self] status in
+            guard let self = self else { return }
+            switch status {
+            case .unknown, .reachable:
+                self.networkSV.isHidden = true
+                self.collectionView.isHidden = false
+                print("reachable or unknown")
+
+                if self.requestImages.isEmpty {
+                    self.loadMore()
+                }
+                
+            case .notReachable:
+                self.networkSV.isHidden = false
+                self.collectionView.isHidden = true
+                print("notReachable")
+            }
+        })
     }
+    
     // MARK: - Setup galery and title
     private func setupLargeTitle() {
         navigationController?.navigationBar.isTranslucent = true
@@ -93,6 +126,13 @@ class ViewController: UIViewController {
         }
         
         collectionView.refreshControl = refreshControl
+    }
+    
+    private func setupNetworkSV() {
+        view.addSubview(networkSV)
+        networkSV.snp.makeConstraints {
+            $0.center.equalTo(view.snp.center)
+        }
     }
     // MARK: - URL, Request
     func getAnswerFromRequest(completion: @escaping(Result<JSONDataModel, Error>) -> ()) {
@@ -159,6 +199,7 @@ class ViewController: UIViewController {
         requestImages.removeAll()
         collectionView.reloadData()
         loadMore()
+        completion?(Bool.random())
     }
     
     func loadMore() {
@@ -174,6 +215,11 @@ class ViewController: UIViewController {
                 loadMore()
             }
     }
+    
+    func doWhaiIWant(completion: @escaping (Bool) -> Void) {
+        self.completion = completion
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource

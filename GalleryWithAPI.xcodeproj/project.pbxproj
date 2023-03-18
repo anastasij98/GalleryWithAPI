@@ -18,6 +18,7 @@
 		4781BF2F29B7CDEC0013D4A9 /* ScreenMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4781BF2E29B7CDEC0013D4A9 /* ScreenMode.swift */; };
 		47E6289429C1E34F0031ACAE /* DetailedImageScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E6289329C1E34F0031ACAE /* DetailedImageScreen.swift */; };
 		47E6289629C352480031ACAE /* URLConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E6289529C352480031ACAE /* URLConfiguration.swift */; };
+		47E7DB8229C630C100AA4818 /* NetworkStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E7DB8129C630C100AA4818 /* NetworkStackView.swift */; };
 		47FAE913299E598D00C69AAC /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FAE912299E598D00C69AAC /* DataModel.swift */; };
 		47FAE915299EA0CD00C69AAC /* AddSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FAE914299EA0CD00C69AAC /* AddSubviews.swift */; };
 		E8313DF5577AE8A1910DE06D /* Pods_GalleryWithAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFC9B05008FC279FFB83411 /* Pods_GalleryWithAPI.framework */; };
@@ -38,6 +39,7 @@
 		4781BF2E29B7CDEC0013D4A9 /* ScreenMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenMode.swift; sourceTree = "<group>"; };
 		47E6289329C1E34F0031ACAE /* DetailedImageScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedImageScreen.swift; sourceTree = "<group>"; };
 		47E6289529C352480031ACAE /* URLConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConfiguration.swift; sourceTree = "<group>"; };
+		47E7DB8129C630C100AA4818 /* NetworkStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStackView.swift; sourceTree = "<group>"; };
 		47FAE912299E598D00C69AAC /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		47FAE914299EA0CD00C69AAC /* AddSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubviews.swift; sourceTree = "<group>"; };
 		85B2E9DA6B739041DCDE98F8 /* Pods-GalleryWithAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GalleryWithAPI.debug.xcconfig"; path = "Target Support Files/Pods-GalleryWithAPI/Pods-GalleryWithAPI.debug.xcconfig"; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				4743DD67299E138E00172F50 /* SceneDelegate.swift */,
 				4743DD7B299E2CEF00172F50 /* Models */,
 				4743DD69299E138E00172F50 /* ViewController.swift */,
+				47E7DB8129C630C100AA4818 /* NetworkStackView.swift */,
 				47E6289529C352480031ACAE /* URLConfiguration.swift */,
 				47E6289329C1E34F0031ACAE /* DetailedImageScreen.swift */,
 				4743DD6E299E138F00172F50 /* Assets.xcassets */,
@@ -143,7 +146,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4743DD76299E138F00172F50 /* Build configuration list for PBXNativeTarget "GalleryWithAPI" */;
 			buildPhases = (
-				763C804E6F68A6CDE8235451 /* [CP] Check Pods Manifest.lock */,
 				4743DD5E299E138E00172F50 /* Sources */,
 				4743DD5F299E138E00172F50 /* Frameworks */,
 				4743DD60299E138E00172F50 /* Resources */,
@@ -222,28 +224,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GalleryWithAPI/Pods-GalleryWithAPI-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D112D875F994BAA2940B3BD8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-GalleryWithAPI-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -255,6 +235,7 @@
 				4781BF2F29B7CDEC0013D4A9 /* ScreenMode.swift in Sources */,
 				47FAE913299E598D00C69AAC /* DataModel.swift in Sources */,
 				47734E7329B2334C00CC0E7F /* UIColorExtension.swift in Sources */,
+				47E7DB8229C630C100AA4818 /* NetworkStackView.swift in Sources */,
 				4743DD7A299E284300172F50 /* GalleryCell.swift in Sources */,
 				4743DD6A299E138E00172F50 /* ViewController.swift in Sources */,
 				47FAE915299EA0CD00C69AAC /* AddSubviews.swift in Sources */,
@@ -400,12 +381,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CL88TLP2K9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GalleryWithAPI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -427,12 +410,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CL88TLP2K9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GalleryWithAPI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

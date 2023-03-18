@@ -15,4 +15,7 @@ extension UIColor {
     static var customPink: UIColor {
         #colorLiteral(red: 0.9294117647, green: 0.3490196078, blue: 0.5725490196, alpha: 1)
     }
+    static var customGrey: UIColor {
+        #colorLiteral(red: 0.2901960611, green: 0.2901960611, blue: 0.2901960611, alpha: 1)
+    }
 }
