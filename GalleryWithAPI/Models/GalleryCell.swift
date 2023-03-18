@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import Alamofire
 
 struct GalleryCellModel {
     
@@ -17,7 +18,7 @@ struct GalleryCellModel {
 class GalleryCell: UICollectionViewCell {
     
     var imageInGallery = UIImageView()
-    var dataTask: URLSessionDataTask?
+    var request: Alamofire.Request?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,9 +33,10 @@ class GalleryCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
-        dataTask?.cancel()
+
         imageInGallery.image = nil
+        request?.cancel()
+        request = nil
     }
     
     func setupCellLayout() {
@@ -62,20 +64,16 @@ class GalleryCell: UICollectionViewCell {
     }
     
     func setupCollectionItem(model: GalleryCellModel) {
-        guard let url = model.imageUrl else {
-            return
-        }
+        let url = model.imageUrl
+        let requestAF = url?.absoluteString
         
-        let request = URLRequest(url: url)
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, _ in
-            if let data = data {
+        request = AF.request(requestAF!, method: .get).responseData { response in
+            if let data = response.data {
                 DispatchQueue.main.async {
-                    self?.imageInGallery.image = UIImage(data: data)
+                    self.imageInGallery.image = UIImage(data: data)
                 }
             }
         }
-        task.resume()
-        dataTask = task
     }
     
 }

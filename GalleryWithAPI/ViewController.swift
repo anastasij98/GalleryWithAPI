@@ -47,15 +47,48 @@ class ViewController: UIViewController {
         view.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         return view
     }()
+    
+    lazy var networkSV: NetworkStackView = {
+        let view = NetworkStackView()
+        view.isHidden = true
+        return view
+    }()
+    
+    lazy var reachibilityNetwork = NetworkReachabilityManager(host: "www.ya.ru")
+    
+    var completion: ((Bool) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupLargeTitle()
         setupGallery()
+        setupNetworkSV()
         loadMore()
+//        doWhaiIWant( completion: { boolValue in
+//            print("doWhaiIWant", boolValue)
+//        })
         
+        reachibilityNetwork?.startListening(onUpdatePerforming: { [weak self] status in
+            guard let self = self else { return }
+            switch status {
+            case .unknown, .reachable:
+                self.networkSV.isHidden = true
+                self.collectionView.isHidden = false
+                print("reachable or unknown")
+
+                if self.requestImages.isEmpty {
+                    self.loadMore()
+                }
+                
+            case .notReachable:
+                self.networkSV.isHidden = false
+                self.collectionView.isHidden = true
+                print("notReachable")
+            }
+        })
     }
+    
     // MARK: - Setup galery and title
     private func setupLargeTitle() {
         navigationController?.navigationBar.isTranslucent = true
@@ -69,6 +102,11 @@ class ViewController: UIViewController {
             .foregroundColor: #colorLiteral(red: 0.1843137255, green: 0.09019607843, blue: 0.4039215686, alpha: 1) ,
             .font: UIFont.systemFont(ofSize: 30, weight: .semibold)
         ]
+        
+        navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .customPurple
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backArrow")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backArrow")
     }
     
     private func setupGallery() {
@@ -89,6 +127,13 @@ class ViewController: UIViewController {
         
         collectionView.refreshControl = refreshControl
     }
+    
+    private func setupNetworkSV() {
+        view.addSubview(networkSV)
+        networkSV.snp.makeConstraints {
+            $0.center.equalTo(view.snp.center)
+        }
+    }
     // MARK: - URL, Request
     func getAnswerFromRequest(completion: @escaping(Result<JSONDataModel, Error>) -> ()) {
         pageToLoad = currentPage + 1
@@ -104,7 +149,7 @@ class ViewController: UIViewController {
                 popularValue = true
         }
 
-        let request = "https://gallery.prod1.webant.ru/api/photos"
+        let request = URLConfiguration.url + URLConfiguration.api
         let parametrs: Parameters = [
             "page": "\(pageToLoad)",
             "new": "\(newValue)",
@@ -154,6 +199,7 @@ class ViewController: UIViewController {
         requestImages.removeAll()
         collectionView.reloadData()
         loadMore()
+        completion?(Bool.random())
     }
     
     func loadMore() {
@@ -169,6 +215,11 @@ class ViewController: UIViewController {
                 loadMore()
             }
     }
+    
+    func doWhaiIWant(completion: @escaping (Bool) -> Void) {
+        self.completion = completion
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -181,8 +232,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gallery", for: indexPath) as? GalleryCell else { return UICollectionViewCell() }
 
-        let urlSting = "https://gallery.prod1.webant.ru/media/" + (requestImages[indexPath.item].image.name ?? "")
-        let model = GalleryCellModel(imageUrl: URL(string: urlSting))
+        let urlString = URLConfiguration.url + URLConfiguration.media + (requestImages[indexPath.item].image.name ?? "")
+        let model = GalleryCellModel(imageUrl: URL(string: urlString))
         cell.setupCollectionItem(model: model)
        
         return cell
@@ -206,5 +257,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 17
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let nextVC = DetailedImageScreen()
+        nextVC.model = requestImages[indexPath.item]
+        navigationController?.pushViewController(nextVC, animated: true)    
     }
 }
